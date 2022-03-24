@@ -1,0 +1,33 @@
+#COLOR
+backgroundColor: FFFFFF :String
+lineColor      : 000000 :String
+gridColor      : 42f5e9 :String
+textColor      : FF0000 :String
+
+
+#DIMENSION
+dimension:4:int               #number of square in grid
+pixelSpacing:250:int          #how big any element of grid
+
+
+#SPEED
+speed            :20000:int
+speedRotation    :1600:int
+fps    :60:int
+cps    :480:int
+
+
+#COMMAND
+left     :a:String
+right    :d:String
+up       :+:String
+down     :-:String
+forward  :w:String
+backward :s:String
+#---------
+lookLeft     :j:String
+lookRight    :l:String
+lookUp       :i:String
+lookDown     :k:String
+
+
