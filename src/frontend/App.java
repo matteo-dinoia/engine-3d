@@ -40,7 +40,7 @@ public class App implements CanvasRepaintListener{
 		test();
 
 		//PLAYER
-		camera=new Camera3D(SIDE, SIDE, Math.PI/2, Math.PI/2);
+		camera=new Camera3D(SIDE, SIDE, Math.PI, Math.PI); //ultimi 2 valori moltiplicati per 2
 		player=new PlayerMovement(camera);
 		canvas.getFrame().addKeyListener(player);
 
@@ -55,14 +55,16 @@ public class App implements CanvasRepaintListener{
 	private ArrayList<Vector3D> testCubi=new ArrayList<Vector3D>();
 	private ArrayList<Vector3D> testGraph=new ArrayList<Vector3D>();
 	private void test() {
-		/*
-		for(int i=0; i<10; i++) {
-			for(int i2=0; i2<10; i2++) {
+		int max, pixel;
+		/*for(int i=0; i<1; i++) {
+			for(int i2=0; i2<1; i2++) {
 				testCubi.add(new Vector3D(i, -3, i2));
 
 			}
-		}*//*
-		int max=1, pixel=9;
+		}*/
+
+		max=0; pixel=9;
+		max = max/2;
 		for(int i=-max; i<=max; i++) {
 			for(int i2=-max; i2<=max; i2++) {
 				for(int i3=-max; i3<=max; i3++) {
@@ -70,17 +72,14 @@ public class App implements CanvasRepaintListener{
 
 				}
 			}
-		}*/
-
-		int max=10, pixel=2;
+		}
+		/*
+		max=10; pixel=2;
 		for(int i=-max; i<=max; i++) {
 			for(int i2=-max; i2<=max; i2++) {
-
-				testGraph.add(new Vector3D(i*pixel, /*Math.abs(i2*i*pixel)/10*/ (i*i+i2*i2)*pixel/10, i2*pixel));
-
-
+				testGraph.add(new Vector3D(i*pixel,  (i*i+i2*i2)*pixel/10, i2*pixel)); // extra Math.abs(i2*i*pixel)/10
 			}
-		}
+		}*/
 	}
 
 	//PAINT
@@ -118,7 +117,7 @@ public class App implements CanvasRepaintListener{
 		}
 
 
-		//CUBO
+		//CUBE
 		setColorByCostant("lineColor", graphics);
 		for(int i=0; i<testCubi.size(); i++) {
 			drawCube(graphics, testCubi.get(i));
@@ -133,7 +132,7 @@ public class App implements CanvasRepaintListener{
 				Vector2D b2=new Vector2D(v2.getX(), v2.getZ());
 
 				double dist=b1.distance(b2);
-				if(dist<=2.5) {
+				if(dist<=2.5) { //TODO remove (remove line useless)
 					drawLine(graphics, v1, v2);
 				}
 
@@ -165,13 +164,14 @@ public class App implements CanvasRepaintListener{
 		drawLine(graphics, Vector3D.getSummed(position, forwardUp), Vector3D.getSummed(position, forwardUpRight));
 	}
 	private void drawLine(Graphics2D graphics, Vector3D v1,  Vector3D v2) {
-		Vector2D a=camera.getOnScreenCoord(v1);
-		Vector2D b=camera.getOnScreenCoord(v2);
+		Vector2D a, b;
 
-		if(a!=null&& b!=null) {
-			graphics.drawLine((int)a.getX(), (int)a.getY(), (int)b.getX(), (int)b.getY());
-		}
+		a=camera.getOnScreenCoord(v1);
+		if(a==null) return;
+		b=camera.getOnScreenCoord(v2);
+		if(b==null) return;
 
+		graphics.drawLine((int)a.getX(), (int)a.getY(), (int)b.getX(), (int)b.getY());
 	}
 
 

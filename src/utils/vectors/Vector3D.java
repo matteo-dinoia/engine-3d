@@ -3,7 +3,7 @@ package utils.vectors;
 import java.text.DecimalFormat;
 
 public class Vector3D {
-	
+
 	//TODO dico che angolo è radianti
 	private double x=0, y=0, z=0, module=0, latitude=0,  longitude=0;
 	public Vector3D(double x, double y, double z) {
@@ -12,8 +12,8 @@ public class Vector3D {
 	public Vector3D(Vector3D vect) {
 		this(vect.x, vect.y, vect.z);
 	}
-	
-	
+
+
 	//VECTORS OPERATION --------------------------------------------------
 	public double distance(Vector3D vect) {
 		return distance(vect.x, vect.y, vect.z);
@@ -21,13 +21,13 @@ public class Vector3D {
 	public double distance(double x2, double y2, double z2) {
 		return getModule(x2-x, y2-y, z2-z);
 	}
-	
+
 	public void normalize() {
 		double module=getModule();
 		this.divide(module);
-		
+
 	}
-	
+
 	public void sum(Vector3D vect) {
 		sum(vect.x, vect.y, vect.z);
 	}
@@ -46,13 +46,13 @@ public class Vector3D {
 	public void multiply(double n) {
 		this.set(this.x*n, this.y*n, this.z*n);
 	}
-	
+
 	public static Vector3D getSummed(Vector3D vect1, Vector3D vect2) {
 		if(vect1==null || vect2==null) return null;
-		
+
 		Vector3D ris=new Vector3D(vect1);
 		ris.sum(vect2);
-		
+
 		return ris;
 	}
 	public static Vector3D getDiffernce(Vector3D vect1, Vector3D vect2) {
@@ -63,18 +63,18 @@ public class Vector3D {
 	}
 	public static Vector3D getMultiplied(Vector3D vect, double n) {
 		if(vect==null) return null;
-		
+
 		Vector3D ris=new Vector3D(vect);
 		ris.multiply(n);
-		
+
 		return ris;
 	}
 	private static double getModule(double x, double y, double z) {
 		//Pitagora
 		return Math.sqrt(x*x+y*y+z*z);
 	}
-	
-	
+
+
 	//SETTER AND GETTER (+POLAR) -----------------------------------------
 	public double getModule() {
 		return module;
@@ -115,13 +115,13 @@ public class Vector3D {
 		this.x=x;
 		this.y=y;
 		this.z=z;
-		
+
 		this.module=getModule(x, y, z);
-		
-		
+
+
 		this.longitude=getLongitude(x, y, z); //hotizontal
 		this.latitude=getLatitude(x, y, z); //vertical
-		
+
 		/*if(Double.isNaN(longitude) || Double.isNaN(latitude)) {
 			System.err.println("NaN in setByLatLon setting latLon");
 			System.exit(-1);
@@ -131,53 +131,46 @@ public class Vector3D {
 		//Use y and module
 		double module=getModule(x, y, z);
 		if(module==0) return 0; //error handling
-		
+
 		return Math.asin(y/module);
 	}
 	private static double getLongitude(double x, double y, double z) {
 		//Cases with vertital line
-		double module=getModule(x, y, z), ris=0, cosLat=0;
-		if(module==0) return 0; //error handling
-		
-		//cosLat=Math.sqrt(1-y/module);
-		cosLat=Math.cos(getLatitude(x, y, z));
-		
-		ris=Math.acos(x/(module *cosLat));
-		
-		if(!Double.isNaN(ris)) {
-			if(z<0)ris*=-1;
-			return ris;
-		}
-		else {
-			if(z==0) return 0;
-			else if(x==0) {
-				if(z>=0) return Math.PI/2; 
-				else return -Math.PI/2; 
-			}
-			else if(y==0) {
-				ris=Math.atan(z/x);
-				if(x<0) ris+=Math.PI;
-				return ris;
-			}
-			else return 0;
-		}
+		double ris;
+
+		// COME CI SONO ARRIVATO
+		//cosLat=Math.sqrt(x*x+z*z)/module;  //cosLat=Math.cos(getLatitude(x, y, z));
+		//ris=Math.acos(x/(module *cosLat));
+		// RIGHT ONE
+		if(x != 0)ris = Math.acos(x / Math.sqrt(x * x + z * z));
+		else ris = Math.PI / 2;
+
+		if(z != 0) ris*= z / Math.abs(z); //segno di z
+
+		return ris;
 	}
-	
+
 	public void rotateLongitude(double angle) {
 		if(angle==0) return;
-		
+
 		double lon=angle+getLongitude();
 		double lat=getLatitude();
-		
+
 		this.setByLatLon(lat, lon);
 	}
 	public void rotateLatitude(double angle) {
+		angle = angle % (2 * Math.PI);
 		if(angle==0) return;
-		
-		double lat=angle+getLatitude(); //TODO FULL ROTATION
-		if(lat>=Math.PI/2 || lat<=-Math.PI/2) return;
+		else if(angle >= Math.PI || angle <= -Math.PI) angle = 2 * Math.PI - angle;
+
+		double lat=getLatitude(); //TODO FULL ROTATION
 		double lon=getLongitude();
-		
+		if(lat + angle>=Math.PI/2 || lat + angle <= -Math.PI/2){
+			lon += Math.PI;
+			lat = Math.PI - (lat + angle);
+		}else lat += angle;
+
+
 		this.setByLatLon(lat, lon);
 	}
 	private void setByLatLon(double lat, double lon) {
@@ -188,11 +181,11 @@ public class Vector3D {
 		double x=module*Math.cos(lat)*Math.cos(lon);
 		double y=module*Math.sin(lat);
 		double z=module*Math.cos(lat)*Math.sin(lon);
-		
+
 		this.set(x, y, z);
 	}
-	
-	
+
+
 	//TO-STRING
 	private static final DecimalFormat df = new DecimalFormat("0.000");
 	public String toString() {
