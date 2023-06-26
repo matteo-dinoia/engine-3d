@@ -40,7 +40,7 @@ public class App implements CanvasRepaintListener{
 		test();
 
 		//PLAYER
-		camera=new Camera3D(SIDE, SIDE, Math.PI, Math.PI); //ultimi 2 valori moltiplicati per 2
+		camera=new Camera3D(SIDE, SIDE, Math.PI/2, Math.PI/2); //ultimi 2 valori moltiplicati per 2
 		player=new PlayerMovement(camera);
 		canvas.getFrame().addKeyListener(player);
 
@@ -124,7 +124,7 @@ public class App implements CanvasRepaintListener{
 		}
 
 		//GRAPH
-		for(int i=0; i<testGraph.size(); i++) {
+		/*for(int i=0; i<testGraph.size(); i++) {
 			for(int i2=0; i2<testGraph.size(); i2++) {
 				Vector3D v1=testGraph.get(i);
 				Vector3D v2=testGraph.get(i2);
@@ -137,7 +137,7 @@ public class App implements CanvasRepaintListener{
 				}
 
 			}
-		}
+		}*/
 
 
 	}
@@ -166,10 +166,8 @@ public class App implements CanvasRepaintListener{
 	private void drawLine(Graphics2D graphics, Vector3D v1,  Vector3D v2) {
 		Vector2D a, b;
 
-		a=camera.getOnScreenCoord(v1);
-		if(a==null) return;
-		b=camera.getOnScreenCoord(v2);
-		if(b==null) return;
+		if((a=camera.getOnScreenCoord(v1))==null) return;
+		if((b=camera.getOnScreenCoord(v2))==null) return;
 
 		graphics.drawLine((int)a.getX(), (int)a.getY(), (int)b.getX(), (int)b.getY());
 	}
