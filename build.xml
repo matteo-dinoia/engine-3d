@@ -1,0 +1,33 @@
+<!-- MANUALLY MADE DO NOT REMOVE -->
+<project name="es3-4" default="compile" basedir=".">
+	<description>Build file for ex 3 and 4</description>
+
+	<!-- set global properties for this build -->
+	<property name="src" location="src"/>
+	<property name="lib" location="lib"/>
+	<property name="build" location="build"/>
+
+	<target name="init">
+		<mkdir dir="${build}"/>
+	</target>
+
+	<target name="compile" depends="init" description="compile the source">
+		<!-- Compile the Java code from ${src} into ${build} -->
+		<javac includeantruntime="false" sourcepath="" srcdir="${src}" destdir="${build}">
+			<classpath>
+				<fileset dir="${lib}"><include name="*.jar" /></fileset>
+			</classpath>
+			<include name="**/*.java"/>
+			<include name="**/**/*.java"/>
+		</javac>
+	</target>
+
+	<target name="run" depends="compile" description="run the source">
+		<java classname="..." dir="${build}" fork="true">
+		</java>
+	</target>
+
+	<target name="clean" description="clean up">
+		<delete dir="${build}"/>
+	</target>
+</project>
