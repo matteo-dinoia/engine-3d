@@ -53,7 +53,7 @@ public class App implements CanvasRepaintListener{
 
 	//TEST CUBES
 	private ArrayList<Vector3D> testCubi=new ArrayList<Vector3D>();
-	private ArrayList<Vector3D> testGraph=new ArrayList<Vector3D>();
+	//private ArrayList<Vector3D> testGraph=new ArrayList<Vector3D>();
 	private void test() {
 		int max, pixel;
 		/*for(int i=0; i<1; i++) {

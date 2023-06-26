@@ -50,12 +50,12 @@ public class PlayerMovement implements KeyListener, ClockListener{
 	public void clockUpdate(int millsPassed) {
 		//MOVEMENT
 		double speed=ConstantsManager.getIntValueOrCrash("speed")/1000.0/ConstantsManager.getIntValueOrCrash("cps");
-		double x=(-boolToInt(backward)+boolToInt(forward))*speed;
+		//double x=(-boolToInt(backward)+boolToInt(forward))*speed;
 		double y=(-boolToInt(down)+boolToInt(up))*speed;
 		double z=(-boolToInt(left)+boolToInt(right))*speed;
 
 		//TODO CHECK
-		Vector2D temp=new Vector2D(x, z);
+		//Vector2D temp=new Vector2D(x, z);
 		//temp.rotateRadiant(camera.getLookingDirection().getLongitude());
 		camera.getPosition().sum(Vector3D.getMultiplied(camera.getLookingDirection(), z));
 		camera.getPosition().sum(Vector3D.getMultiplied(camera.getUpDirection(), y));
